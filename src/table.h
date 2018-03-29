@@ -5,11 +5,11 @@
 
 namespace codu {
 
-class Index {
+class Table {
 public:
-    Index();
+    Table();
 
-    ~Index();
-}; // class Index
+    ~Table();
+}; // class Table
 
 } // namespace codu

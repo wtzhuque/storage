@@ -3,13 +3,15 @@
 /* Email: wtzhuque@163.com       */
 /*********************************/
 
+#include <string>
+
 namespace codu {
 
-class Index {
-public:
-    Index();
+struct Record {
+    uint64_t record_id;
+    char data[0];
+}; //struct Record
 
-    ~Index();
-}; // class Index
+
 
 } // namespace codu

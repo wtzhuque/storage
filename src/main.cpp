@@ -15,7 +15,7 @@ int run(int argc, char** argv) {
     fprintf(stderr, "Storage Benchmark\n");
 
     std::shared_ptr<Engine> engine = std::make_shared<Engine>();
-    int ret = engine->init();
+    int ret = engine->init("./db");
     if (ret != 0) {
         fprintf(stderr, "init engine failed\n");
     }

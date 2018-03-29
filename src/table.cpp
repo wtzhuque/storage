@@ -3,13 +3,14 @@
 /* Email: wtzhuque@163.com       */
 /*********************************/
 
+#include "table.h"
+
 namespace codu {
 
-class Index {
-public:
-    Index();
+Table::Table() {
+}
 
-    ~Index();
-}; // class Index
+Table::~Table() {
+}
 
 } // namespace codu

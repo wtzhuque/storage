@@ -5,4 +5,7 @@
 
 namespace codu {
 
+struct Options {
+}; // struct Options
+
 } // namespace codu
