@@ -3,12 +3,15 @@
 /* Email: wtzhuque@163.com       */
 /*********************************/
 
+#ifndef __CODU_ENGINE_H__
+#define __CODU_ENGINE_H__
+
 #include <string>
 
 #include "options.h"
 #include "index.h"
 #include "table.h"
-#include "wal.h"
+#include "record.h"
 
 namespace codu {
 
@@ -18,7 +21,7 @@ public:
 
     ~Engine();
 
-    int init(const std::string& db_path);
+    int init(const std::string& db_path, const Options& options);
 
     int destroy();
 
@@ -27,10 +30,16 @@ public:
     int get(const std::string& key, std::string* value);
 
 private:
-    WAL* _wal;
+    bool encode_record(const std::string& key, const std::string& value, Record* record);
+
+    bool decode_record(const Record& record, std::string* key, std::string* value);
+
+private:
     Index* _index;
     Table* _table;
     std::string _db_path;
 }; // class Engine
 
 } // namespace codu
+
+#endif // __CODU_ENGINE_H__

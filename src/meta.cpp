@@ -3,26 +3,22 @@
 /* Email: wtzhuque@163.com       */
 /*********************************/
 
-#include "block.h"
+#include "meta.h"
 
 namespace codu {
 
-Block::Block() {
+Meta::Meta() {
 }
 
-Block::~Block() {
+Meta::~Meta() {
 }
 
-int Block::init(const std::string& block_path) {
+int Meta::init(const std::string& meta_path) {
     return 0;
 }
 
-int Block::destroy() {
+int Meta::destroy() {
     return 0;
 }
 
-int Block::append(const Record& record) {
-    return 0;
-}
-
-}
+} // namespace codu

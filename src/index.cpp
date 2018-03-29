@@ -24,11 +24,11 @@ int Index::destroy() {
     return 0;
 }
 
-int Index::seek(const std::string& key, Addr* addr) {
+bool Index::seek(const std::string& key, Addr* addr) {
     return 0;
 }
 
-int Index::insert(const std::string& key, Addr* addr) {
+bool Index::insert(const std::string& key, const Addr& addr) {
     return 0;
 }
 
