@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "options.h"
 #include "addr.h"
 
 namespace codu {
@@ -21,7 +22,7 @@ public:
     /**
      * @brief init index from index_file
      */
-    int init(const std::string& index_file);
+    int init(const std::string& index_file, const Options& options);
 
     /**
      * @brief destroy index

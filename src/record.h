@@ -12,8 +12,16 @@ namespace codu {
 
 struct Record {
     uint64_t record_id;
+    uint32_t size;
+    uint32_t ts;
+    uint32_t ttl;
     char data[0];
 }; //struct Record
+
+struct RawString {
+    uint32_t size;
+    char data[0];
+};
 
 inline bool get_record_key(const Record& record, std::string* key) {
     return false;

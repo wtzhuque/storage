@@ -9,6 +9,7 @@
 #include <string>
 
 #include "record.h"
+#include "addr.h"
 
 namespace codu {
 
@@ -22,7 +23,15 @@ public:
 
     int destroy();
 
-    int append(const Record& record);
+    int append(const Record& record, Addr* addr);
+
+    int read(uint32_t offset, Record* record);
+
+private:
+    int _cur_offset;
+    int _cur_size;
+    int _id;
+    FILE* _fp;
 }; // class Block
 
 } // namespace codu

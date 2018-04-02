@@ -7,13 +7,17 @@
 
 namespace codu {
 
-Block::Block() {
+Block::Block()
+    : _cur_offset(0),
+      _cur_size(0),
+      _fp(nullptr) {
 }
 
 Block::~Block() {
 }
 
 int Block::init(const std::string& block_path) {
+    _fp = fopen(block_path.c_str(), "rw+");
     return 0;
 }
 
@@ -21,7 +25,27 @@ int Block::destroy() {
     return 0;
 }
 
-int Block::append(const Record& record) {
+int Block::append(const Record& record, Addr* addr) {
+    if (_cur_offset != _cur_size) {
+        fseek(_fp, _cur_size, SEEK_SET);
+        _cur_offset = _cur_size;
+    }
+    
+    size_t record_size = fwrite(&record, sizeof(record) + record.size, sizeof(char), _fp);
+
+    addr->offset = _cur_offset;
+    addr->block_id = _id;
+
+    _cur_size += record_size;
+    _cur_offset += record_size;
+    return 0;
+}
+
+int Block::read(uint32_t offset, Record* record) {
+    fseek(_fp, offset, SEEK_SET);
+    fread((void*)record, sizeof(Record), 1, _fp);
+    fread((void*)record->data, record->size, sizeof(char), _fp);
+    _cur_offset = offset;
     return 0;
 }
 

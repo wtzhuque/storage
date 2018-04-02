@@ -28,7 +28,7 @@ int Engine::init(const std::string& db_path, const Options& options) {
 
     _index = new Index();
     std::string index_path = _db_path + DB_PATH_INDEX;
-    ret = _index->init(index_path);
+    ret = _index->init(index_path, options);
     if (ret != 0) {
         fprintf(stderr, "index init failed err=%d\n", ret);
         return ret;
@@ -36,7 +36,7 @@ int Engine::init(const std::string& db_path, const Options& options) {
 
     _table = new Table();
     std::string table_path = _db_path + DB_PATH_TABLE;
-    ret = _table->init(table_path);
+    ret = _table->init(table_path, options);
     if (ret != 0) {
         fprintf(stderr, "table init failed err=%d\n", ret);
         return ret;

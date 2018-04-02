@@ -15,7 +15,7 @@ Index::Index() {
 Index::~Index() {
 }
 
-int Index::init(const std::string& index_file) {
+int Index::init(const std::string& index_file, const Options& options) {
     fprintf(stderr, "init index from [%s]\n", index_file.c_str());
     return 0;
 }
