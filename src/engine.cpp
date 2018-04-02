@@ -12,10 +12,12 @@ namespace codu {
 const char* DB_PATH_WAL = "/wal";
 const char* DB_PATH_INDEX = "/index";
 const char* DB_PATH_TABLE = "/table";
+const char* DB_PATH_MENIFEST = "/menifest";
 
 Engine::Engine()
     : _index(nullptr),
-      _table(nullptr) {
+      _table(nullptr),
+      _menifest(nullptr) {
 }
 
 Engine::~Engine() {
@@ -25,6 +27,14 @@ int Engine::init(const std::string& db_path, const Options& options) {
     _db_path.assign(db_path);
 
     int ret = 0;
+    
+    _menifest = new Menifest();
+    std::string menifest_path = _db_path + DB_PATH_MENIFEST;
+    ret = _menifest->init(menifest_path);
+    if (ret != 0) {
+        fprintf(stderr, "menifest init failed err=%d\n", ret);
+        return ret;
+    }
 
     _index = new Index();
     std::string index_path = _db_path + DB_PATH_INDEX;
@@ -40,8 +50,7 @@ int Engine::init(const std::string& db_path, const Options& options) {
     if (ret != 0) {
         fprintf(stderr, "table init failed err=%d\n", ret);
         return ret;
-    }
-    
+    } 
     
     fprintf(stderr, "init engine [%s] succ\n", db_path.c_str());
     return ret;

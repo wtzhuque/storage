@@ -17,11 +17,20 @@ Block::~Block() {
 }
 
 int Block::init(const std::string& block_path) {
-    _fp = fopen(block_path.c_str(), "rw+");
+    _fp = fopen(block_path.c_str(), "ab+");
+    if (_fp == nullptr) {
+        fprintf(stderr, "init block [%s] failed\n", block_path.c_str());
+    } else {
+        fprintf(stderr, "init block [%s]\n", block_path.c_str());
+    }
     return 0;
 }
 
 int Block::destroy() {
+    if (_fp != nullptr) {
+        fflush(_fp);
+        fclose(_fp);
+    }
     return 0;
 }
 

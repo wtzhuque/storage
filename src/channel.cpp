@@ -21,6 +21,7 @@ int Channel::init() {
 
 int Channel::append_block(Block* block) {
     _blocks.push_back(block);
+    _cur_block = block;
     return 0;
 }
 
