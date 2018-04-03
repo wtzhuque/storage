@@ -7,6 +7,7 @@
 #define __CODU_CHANNEL_H__
 
 #include <list>
+#include <thread>
 
 #include "block.h"
 #include "addr.h"
@@ -21,6 +22,8 @@ public:
 
     int init();
 
+    int destroy();
+
     int append_block(Block* block);
 
     int append(const Record& record, Addr* addr);
@@ -31,7 +34,8 @@ private:
     void compact_loop();
 
 private:
-    Block* _cur_block;
+    std::thread* _channel_worker {nullptr};
+    Block* _cur_block {nullptr};
     std::list<Block*> _blocks;
 }; // class Channel
 

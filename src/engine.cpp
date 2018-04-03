@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 
+#include "record_pool.h"
+
 namespace codu {
 
 const char* DB_PATH_WAL = "/wal";
@@ -80,22 +82,32 @@ int Engine::destroy() {
 }
 
 int Engine::put(const std::string& key, const std::string& value) {
-    // TODO: alloc from object pool
-    Record* record = new Record();
-    Addr* addr = new Addr();
+    Record* record = RecordPool::alloc(value.size());
+    RawLog log;
+    Addr addr;
 
     // generate record
     if (!encode_record(key, value, record)) {
+        RecordPool::free(record);
         return -1;
     }
     
     // append record to table and get address
-    if (!_table->append(*record, addr)) {
+    if (!_table->append(*record, &addr)) {
+        RecordPool::free(record);
+        return -1;
+    }
+
+    log.record_id = record->record_id;
+    log.addr = *(uint64_t*)(&addr);
+    if (!_wal->append(log)) {
+        RecordPool::free(record);
         return -1;
     }
 
     // update address in index
-    if (!_index->insert(key, *addr)) {
+    if (!_index->insert(key, addr)) {
+        RecordPool::free(record);
         return -1;
     }
 
@@ -103,22 +115,24 @@ int Engine::put(const std::string& key, const std::string& value) {
 }
 
 int Engine::get(const std::string& key, std::string* value) {
-    // TODO: alloc from object pool
-    Record* record = new Record();
-    Addr* addr = new Addr();
+    Record* record = RecordPool::alloc(value.size());
+    Addr addr;
 
     // seek address from index
-    if (!_index->seek(key, addr)) {
+    if (!_index->seek(key, &addr)) {
+        RecordPool::free(record);
         return -1;
     }
 
     // read data from table
-    if (_table->read(*addr, record)) {
+    if (_table->read(addr, record)) {
+        RecordPool::free(record);
         return -1;
     }
 
     // decode value
     if (!decode_record(*record, nullptr, value)) {
+        RecordPool::free(record);
         return -1;
     }
 

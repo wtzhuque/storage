@@ -5,6 +5,8 @@
 
 #include "channel.h"
 
+#include <future>
+
 namespace codu {
 
 Channel::Channel() {
@@ -16,6 +18,12 @@ Channel::~Channel() {
 }
 
 int Channel::init() {
+    _channel_worker = new std::thread(&Channel::append_loop, this);
+    return 0;
+}
+
+int Channel::destroy() {
+    _channel_worker->join();
     return 0;
 }
 

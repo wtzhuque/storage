@@ -11,6 +11,7 @@
 #include "options.h"
 #include "index.h"
 #include "table.h"
+#include "wal.h"
 #include "menifest.h"
 #include "record.h"
 
@@ -36,9 +37,10 @@ private:
     bool decode_record(const Record& record, std::string* key, std::string* value);
 
 private:
-    Index* _index;
-    Table* _table;
-    Menifest* _menifest;
+    Index* _index {nullptr};
+    Table* _table {nullptr};
+    WAL* _wal {nullptr};
+    Menifest* _menifest {nullptr};
     std::string _db_path;
 }; // class Engine
 

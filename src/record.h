@@ -13,6 +13,7 @@ namespace codu {
 struct Record {
     uint64_t record_id;
     uint32_t size;
+    uint32_t capacity;
     uint32_t ts;
     uint32_t ttl;
     char data[0];

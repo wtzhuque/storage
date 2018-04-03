@@ -20,8 +20,6 @@ int Block::init(const std::string& block_path) {
     _fp = fopen(block_path.c_str(), "ab+");
     if (_fp == nullptr) {
         fprintf(stderr, "init block [%s] failed\n", block_path.c_str());
-    } else {
-        fprintf(stderr, "init block [%s]\n", block_path.c_str());
     }
     return 0;
 }
@@ -57,6 +55,7 @@ int Block::append(const RawLog& log) {
     }
 
     size_t log_size = fwrite(&log, sizeof(log), sizeof(char), _fp);
+
     _cur_size += log_size;
     _cur_offset += log_size;
     return 0;
