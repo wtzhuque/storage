@@ -11,6 +11,7 @@
 #include "options.h"
 #include "index.h"
 #include "table.h"
+#include "menifest.h"
 #include "record.h"
 
 namespace codu {
@@ -37,6 +38,7 @@ private:
 private:
     Index* _index;
     Table* _table;
+    Menifest* _menifest;
     std::string _db_path;
 }; // class Engine
 

@@ -5,6 +5,8 @@
 
 #include "table.h"
 
+//#include <boost/lexical_cast.hpp>
+
 namespace codu {
 
 static const char* DB_PATH_TABLE_DICT = "dict";
@@ -33,6 +35,29 @@ int Table::init(const std::string& table_path, const Options& options) {
     if (ret != 0) {
         fprintf(stderr, "init dict [%s] failed\n", dict_path.c_str());
         return ret;
+    }
+
+    // init blocks
+    // TODO: read block files from menifest
+    int num_blocks = 4;
+    /*
+    std::vector<std::string> block_files(num_blocks);
+    for (int i = 0; i < num_blocks; ++i) {
+        std::string block_file = table_path + "/block." + boost::lexical_cast<std::string>(i);
+        block_files[i] = block_file;
+    }
+    */
+
+    // init block objects
+    for (int i = 0; i < num_blocks; ++i) {
+        Block* block = new Block();
+        /*
+        if (block->init(block_files[i]) != 0) {
+            fprintf(stderr, "init block [%d] failed\n", i);
+            continue;
+        }
+        */
+        _blocks.push_back(block);
     }
 
     // init blocks
