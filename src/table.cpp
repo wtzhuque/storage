@@ -7,7 +7,10 @@
 
 namespace codu {
 
-Table::Table() {
+static const char* DB_PATH_TABLE_DICT = "dict";
+
+Table::Table()
+    : _dict(nullptr) {
 }
 
 Table::~Table() {
@@ -23,12 +26,16 @@ int Table::init(const std::string& table_path, const Options& options) {
         _channels[i] = new Channel();
     }
 
-    // init blocks
-    std::string menifest_path = table_path + "/menifest";
-    int ret = load_manifest(menifest_path);
+    // init dict
+    const std::string dict_path = table_path + DB_PATH_TABLE_DICT; 
+    _dict = new Dict();
+    int ret = _dict->init(dict_path);
     if (ret != 0) {
-        fprintf(stderr, "load menifest failed");
+        fprintf(stderr, "init dict [%s] failed\n", dict_path.c_str());
+        return ret;
     }
+
+    // init blocks
 
     // init channel with blocks
     for (size_t i = 0; i < _blocks.size(); ++i) {
@@ -43,13 +50,19 @@ int Table::load_manifest(const std::string& manifest_path) {
     return 0;
 }
 
+int Table::load_compress_dict(const std::string& dict_path) {
+    return 0;
+}
+
 int Table::destroy() {
     return 0;
 }
 
 bool Table::append(const Record& record, Addr* addr) {
     int channel_id = select_channel(record);
-    int ret = _channels[channel_id]->append(record, addr);
+    Record tmp_record;
+    encode(record, &tmp_record);
+    int ret = _channels[channel_id]->append(tmp_record, addr);
     if (ret != 0) {
         fprintf(stderr, "append record to channel[%d] failed\n", channel_id);
         return false;
@@ -59,15 +72,25 @@ bool Table::append(const Record& record, Addr* addr) {
 
 bool Table::read(const Addr& addr, Record* record) {
     Block* block = _blocks[addr.block_id];
-    int ret = block->read(addr.offset, record);
+    Record tmp_record;
+    int ret = block->read(addr.offset, &tmp_record);
     if (ret != 0) {
         fprintf(stderr, "read from block [%u] failed\n", addr.block_id);
     }
+    decode(tmp_record, record);
     return true;
 }
 
 int Table::select_channel(const Record& record) {
     return record.record_id % _num_channels;
+}
+
+bool Table::encode(const Record& record, Record* coded_record) {
+    return true;
+}
+
+bool Table::decode(const Record& record, Record* uncoded_record) {
+    return true;
 }
 
 } // namespace codu

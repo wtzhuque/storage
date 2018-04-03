@@ -21,7 +21,12 @@ struct Record {
 struct RawString {
     uint32_t size;
     char data[0];
-};
+}; // struct RawString
+
+struct RawLog {
+    uint64_t record_id;
+    uint64_t addr; 
+}; // struct RawLog
 
 inline bool get_record_key(const Record& record, std::string* key) {
     return false;

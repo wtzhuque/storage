@@ -7,13 +7,14 @@
 
 namespace codu {
 
-WAL::WAL() {
+WAL::WAL()
+    : _cur_block(nullptr) {
 }
 
 WAL::~WAL() {
 }
 
-int WAL::init(const std::string& file) {
+int WAL::init(const std::string& wal_path) {
     return 0;
 }
 
@@ -21,7 +22,7 @@ int WAL::destroy() {
     return 0;
 }
 
-int WAL::append() {
+int WAL::append(const RawLog& log) {
     return 0;
 }
 

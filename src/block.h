@@ -19,12 +19,29 @@ public:
 
     ~Block();
 
+    /**
+     * @brief 初始化Block
+     */
     int init(const std::string& block_path);
 
+    /**
+     * @brief 销毁Block对象.
+     */
     int destroy();
 
+    /**
+     * @brief 追加Record到Block文件尾.
+     */
     int append(const Record& record, Addr* addr);
 
+    /**
+     * @brief 追加Log到Block文件尾.
+     */
+    int append(const RawLog& log);
+
+    /**
+     * @brief 从Block读文件, 偏移量offset.
+     */
     int read(uint32_t offset, Record* record);
 
 private:

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "options.h"
+#include "bplustree.h"
 #include "addr.h"
 
 namespace codu {
@@ -38,6 +39,12 @@ public:
      * @brief insert key to index.
      */
     bool insert(const std::string& key, const Addr& addr);
+
+private:
+    uint64_t sign(const std::string& str);
+
+private:
+    bplus_tree* _tree;
 }; // class Index
 
 } // namespace codu
